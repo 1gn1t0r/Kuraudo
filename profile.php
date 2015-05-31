@@ -91,7 +91,7 @@ $user_id = $_SESSION['user_id'];
             <li><a href="profile.php">Profile</a></li>
             <li><a href="#">Settings</a></li>
             <li class="divider"></li>
-            <li><a href="logout.php">Sign out</a></li>
+            <li><a href="control/logout.php">Sign out</a></li>
           </ul>
         </li>
       </ul>
@@ -131,23 +131,23 @@ $user_id = $_SESSION['user_id'];
     $stmt = $mysqli->prepare("SELECT space_available from user_plans, users where user_id=? and user_plan = plan_id");
 	$stmt->bind_param('d', $user_id);
 
-	$files = array();
 	$stmt->execute();
 	$stmt->bind_result($max_usage);
 	$stmt->fetch();
 	
 	$used_usage = 0;
 	$stmt = NULL;
-	$stmt = $mysqli->prepare("SELECT sum(file_size) from logical_files, virtual_files 
+	$stmt = $mysqli->prepare("SELECT sum(file_size) from logical_files, virtual_files, folders
 	WHERE logical_files.file_id = virtual_files.pfile_id
-	AND virtual_files.user_id = ?");
+	AND folders.folder_id = virtual_files.folder_id
+	AND folders.user_id = ?");
 	$stmt->bind_param('d', $user_id);
 	$stmt->execute();
 	$stmt->bind_result($used_usage);
 	$stmt->fetch();
 	$available_usage = $max_usage - $used_usage;	
 
-?>
+	?>
 
 <script>
 
@@ -203,10 +203,31 @@ var myPieChart = new Chart(ctx).Pie(data,options);
 	<h2>Past download usage</h2>
 	<i>Past usage from the last 30 days</i>
 	<canvas id="past_usage" width="600" height="400"></canvas>
+		<?php
+	$stmt = NULL;
+    $stmt = $mysqli->prepare(
+	"SELECT SUM(file_size), day(file_downloads.date_) as DDAY from folders, virtual_files, logical_files, file_downloads
+	WHERE file_downloads.user_id = ? and file_downloads.vfile_id = virtual_files.vfile_id
+	AND virtual_files.pfile_id = logical_files.file_id group by DDAY order by DDAY DESC limit 30");
+	$stmt->bind_param('d', $user_id);
+
+	$stmt->execute();
+	$stmt->bind_result($daily_usage, $day);
+	$days = array();
+	$data = array();
+	while($stmt->fetch())
+	{
+		$days[] = $day;
+		$data[] = $daily_usage/1024/1024;
+	}
+	
+	
+	?>
+	
 	<script>
 	var data = 
 	{
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: [<?php foreach($days as $day) echo "'$day',";?>],
     datasets: [
         {
             label: "My First dataset",
@@ -214,7 +235,7 @@ var myPieChart = new Chart(ctx).Pie(data,options);
             strokeColor: "rgba(220,220,220,0.8)",
             highlightFill: "rgba(220,220,220,0.75)",
             highlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40]
+            data: [<?php foreach($data as $datum) echo "'$datum',";?>]
         }]
 	};
 	

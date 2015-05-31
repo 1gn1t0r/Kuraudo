@@ -196,7 +196,7 @@ $(function(){
 			$('#loading-indicator').show();
 			//$('#dimmerModal').modal('show');
 			
-			$.get('scan.php', {directory:unescaped}, function(data) {
+			$.get('control/scan.php', {directory:unescaped}, function(data) {
 			$('#loading-indicator').hide();
 			//$('#dimmerModal').modal('hide');
 			var response = [data],
@@ -209,25 +209,12 @@ $(function(){
 			goto(dir, response);
 			});
 			
-			$.post("get_full_dir.php", {
+			$.post("control/get_full_dir_index_formatted.php", {
 			 dir_id: dir.substr(1)
 		 }
 		 , function( data ) {
 		  		
-			var url = '';
-			breadcrumbsUrls = generateBreadcrumbs(data);
-			breadcrumbsUrls.forEach(function (u, i) {
-		
-					var name = u.split('/');
-
-					if (i !== breadcrumbsUrls.length - 1) {
-						url += '<li><a href="'+u+'"><span class="folderName">' + name[name.length-1] + '</span></a></li> ';
-					}
-					else {
-						url += '<li class="folderName active">' + name[name.length-1] + '</li>';
-					}
-
-				});
+			var url = data;
 			breadcrumbs.text('').append(url);
 
 			});
@@ -253,15 +240,15 @@ $(function(){
 			//alert("Herro");
 		});
 		
-		breadcrumbs.on('click', 'a', function(e){
+		/*breadcrumbs.on('click', 'a', function(e){
 			e.preventDefault();
 			var index = breadcrumbs.find('a').index($(this)),
 				nextDir = breadcrumbsUrls[index];
 			breadcrumbsUrls.length = Number(index);
 			window.location.hash = encodeURIComponent(nextDir);
-		});
+		});*/
 		
-		$('#newFolderModal').on('hidden.bs.modal', function () {
+		/*$('#newFolderModal').on('hidden.bs.modal', function () {
 			if(window.location.hash == '')
 			{
 				window.location.hash = 'home';
@@ -279,7 +266,7 @@ $(function(){
 			new_dir = window.location.hash;
 	
 			navigate_dir(new_dir);
-		});
+		});*/
 		
 		
 		
@@ -287,10 +274,11 @@ $(function(){
 			
 			if(window.location.hash == '')
 			{
-				window.location.hash = 'home';
+				window.location.hash = $("#default-dir").attr('data-attr');
 			}
 			new_dir = window.location.hash;
-	
+			currentDir = new_dir.substr(1);
+			
 			navigate_dir(new_dir);
 			// We are triggering the event. This will execute 
 			// this function on page load, so that we show the correct folder:

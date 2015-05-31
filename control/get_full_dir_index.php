@@ -1,6 +1,6 @@
 <?php
 
-include("config.php");
+include("../config.php");
 
 
 //$test_dir = "/home/test2";
@@ -54,18 +54,18 @@ function get_base_path($folder_id)
 	while($contained_in != -1)
 	{		
 		$stmt = NULL;
-		$stmt = $mysqli->prepare("SELECT folder_name, contained_in from folders
+		$stmt = $mysqli->prepare("SELECT folder_id, folder_name, contained_in from folders
 					WHERE folder_id = ?
 					ORDER BY folder_name");
 		$stmt->bind_param('d' , $contained_in);
 		$stmt->execute();
-		$stmt->bind_result($folder_name, $contained_in);
+		$stmt->bind_result($folder_id, $folder_name, $contained_in);
 		$stmt->fetch();
 	
 		if($base_folder_path == "")
-			$base_folder_path = $folder_name;
+			$base_folder_path = $folder_id;
 		else
-			$base_folder_path  = $folder_name . "/" . $base_folder_path;
+			$base_folder_path  = $folder_id . "/" . $base_folder_path;
 	}
 	
 	return $base_folder_path;

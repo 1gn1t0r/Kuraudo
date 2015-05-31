@@ -1,20 +1,12 @@
 <?php
-
+include("../config.php");
 
 function save_folder($folder_name, $home_dir) {
     $username = $_SESSION['username'];
 	$user_id = $_SESSION['user_id'];
 	
-	$mysql_hostname = 'localhost';
-    $mysql_username = 'root';
-    $mysql_password = '';
-    $mysql_dbname = 'kuraudo';
+	global $mysql_hostname, $mysql_username, $mysql_password, $mysql_dbname;
 	
-	$file_type = 1;//folder
-	$file_id = -1;
-	
-	$did_exist = 0;	
-
 	$dbh = new PDO("mysql:host=$mysql_hostname;dbname=$mysql_dbname", $mysql_username, $mysql_password);
 
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);			
@@ -50,9 +42,6 @@ else
 $folder_name = empty($_POST['foldername']) ? '' : $_POST['foldername'];
  
 $current_dir = empty($_POST['curdir']) ? '' : $_POST['curdir'];
- 
-// file paths to store
-$paths= [];
- 
+  
 save_folder($folder_name, $current_dir);
 ?>

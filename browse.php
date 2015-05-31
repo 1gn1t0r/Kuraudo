@@ -66,7 +66,7 @@ $cdir = $_SESSION['home_dir'];
       <ul class="nav navbar-nav navbar-right">
 
 		<li>
-          <a href="#" data-jiggle="tooltip" data-placement="bottom" data-original-title="Share" class="glyphicon glyphicon glyphicon-share" aria-hidden="true"></a>
+          <a data-toggle="modal" onclick="setShareWithModalInfo();" data-target="#shareWithModal" data-jiggle="tooltip" data-placement="bottom" data-original-title="Share" class="glyphicon glyphicon glyphicon-share" aria-hidden="true"></a>
         </li>
 		<li>
           <a href="#" data-toggle="modal" data-jiggle="tooltip" data-target="#uploadModal" data-placement="bottom" data-original-title="Upload" class="glyphicon glyphicon glyphicon-cloud-upload" aria-hidden="true"></a>
@@ -85,7 +85,7 @@ $cdir = $_SESSION['home_dir'];
             <li><a href="profile.php">Profile</a></li>
             <li><a href="#">Settings</a></li>
             <li class="divider"></li>
-            <li><a href="logout.php">Sign out</a></li>
+            <li><a href="control/logout.php">Sign out</a></li>
           </ul>
         </li>
       </ul>
@@ -94,7 +94,7 @@ $cdir = $_SESSION['home_dir'];
 </nav>
  
 <div class="container">
-
+<input type="hidden" id="default-dir" data-attr="<?php echo $cdir; ?>">
 
  
 <div class="row">
@@ -150,9 +150,6 @@ $cdir = $_SESSION['home_dir'];
       </li>
 		<li class="context-menu__item">
         <a data-action="View" class="glyphicon glyphicon-retweet">&emsp;Move</a>
-      </li>
-	  <li class="context-menu__item">
-        <a data-action="View" data-toggle="modal" data-target="#shareWithModal" class="glyphicon glyphicon-share">&emsp;Share</a>
       </li>
     </ul>
   </nav>
@@ -297,15 +294,14 @@ $cdir = $_SESSION['home_dir'];
  function createNewFolder() 
  {
 	var folder_name = $("#newFolderName").val();
-	var cdir = "home";
+	var cdir = <?php echo $cdir;?>;
 	if (typeof currentDir !== 'undefined') 
 	{
 		cdir = currentDir;
 	}
-	cdir = cdir + "/";
- 
+	alert(cdir); 
 	 $("#newFolderBtn").prop("disabled",true);
-	 $.post( "new_folder.php", {foldername:folder_name, curdir:cdir}, function( data ) {
+	 $.post( "control/new_folder.php", {foldername:folder_name, curdir:cdir}, function( data ) {
 	  $( ".result" ).html( data );
 	  $("#newFolderBtn").prop("disabled",false);
 		$("#newFolderName").val("");
@@ -354,6 +350,30 @@ $cdir = $_SESSION['home_dir'];
  </script>
 <!-- Set delete modal info -->
 
+ <!-- Set share with modal info -->
+ <script>
+ function setShareWithModalInfo() 
+ {
+	var cdir = <?php echo $cdir;?>;
+	if (typeof currentDir !== 'undefined') 
+	{
+		cdir = currentDir;
+	}
+	
+	
+	
+	$.post("control/get_dir_name.php", {
+		 dir_id : cdir
+	 }
+	 , function( data ) {
+		$("#shareWithModalLabel").text("Share " + data + " with");
+	 });
+	
+	
+}; 
+ </script>
+<!-- End set share with modal info -->
+
  <!-- Delete item -->
  <script>
  function deleteItem() 
@@ -362,7 +382,7 @@ $cdir = $_SESSION['home_dir'];
 		return;
 				 
 	 $("#confirmDeleteBtn").prop("disabled",true);
-	 $.post("delete_item.php", {
+	 $.post("control/delete_item.php", {
 		 item_id : theClickedItemId
 	 }
 	 , function( data ) {
@@ -393,16 +413,14 @@ $cdir = $_SESSION['home_dir'];
 	if(new_name == '')
 		return;
 		
-	var cdir = "home";
+	var cdir = <?php echo $cdir;?>;
 	if (typeof currentDir !== 'undefined') 
 	{
 		cdir = currentDir;
 	}
-	cdir = cdir + "/";
-	
 	 
 	 $("#renameBtn").prop("disabled",true);
-	 $.post("rename_item.php", {
+	 $.post("control/rename_item.php", {
 		 original_name:theClickedItemName,
 		 original_id:theClickedItemId,
 		 renamed_name: new_name,
@@ -423,23 +441,22 @@ $cdir = $_SESSION['home_dir'];
  <script>
  function shareWith() 
  {
-	if(!theClickedItemName)
-		return;
-	if(!theClickedItemId)
-		return;
-	
-	if(theClickedItemName == '')
-		return;
 	var email_ = $("#shareWithEmail").val();
 	var write_ = $("#shareWithWrite").is(':checked');
 	if(!email_)
 		return;
 	if(email_ == '')
 		return;
+	
+	var cdir = <?php echo $cdir;?>;
+	if (typeof currentDir !== 'undefined') 
+	{
+		cdir = currentDir;
+	}
 	 
 	 $("#shareWithBtn").prop("disabled",true);
-	 $.post("share_with.php", {
-		 original_id: theClickedItemId,
+	 $.post("control/share_with.php", {
+		 original_id: cdir,
 		 email : email_,
 		 write : write_
 	 }
@@ -460,15 +477,14 @@ $cdir = $_SESSION['home_dir'];
 	 	 		
     $("#images").fileinput({
         uploadAsync: false,
-        uploadUrl: "upload.php", // your upload server url
+        uploadUrl: "control/upload.php", // your upload server url
 		uploadExtraData:function(){
 		var cdir = <?php echo $cdir;?>;
 		if (typeof currentDir !== 'undefined') 
 		{
 			cdir = currentDir;
 		}
-		cdir = cdir;
-		alert(cdir);
+
 		return {curdir: cdir}}
             
 

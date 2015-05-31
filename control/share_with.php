@@ -1,19 +1,12 @@
 <?php
-
+include("../config.php");
 
 function share_with($original_id, $email, $write) {
     $username = $_SESSION['username'];
 	$user_id = $_SESSION['user_id'];
 	
-	$mysql_hostname = 'localhost';
-    $mysql_username = 'root';
-    $mysql_password = '';
-    $mysql_dbname = 'kuraudo';
+	global $mysql_hostname, $mysql_username, $mysql_password, $mysql_dbname;
 	
-	$file_type = 1;//folder
-	$file_id = -1;
-	
-	$did_exist = 0;	
 
 	$dbh = new PDO("mysql:host=$mysql_hostname;dbname=$mysql_dbname", $mysql_username, $mysql_password);
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		
@@ -25,10 +18,11 @@ function share_with($original_id, $email, $write) {
 	$owner = 0;
 	if($user_id == $user_id_share)
 		$owner = 1;
+	//Do something with owner
 	$read = 1;
-		
-	$stmt = $dbh->prepare("INSERT into PERMISSIONS(vfile_id, user_id, owner_, read_, write_) values(:vfile_id, :user_id, :owner_, :read_, :write_)");
-	$stmt->bindParam(':vfile_id', $original_id, PDO::PARAM_INT);
+	$owner = 0;	
+	$stmt = $dbh->prepare("INSERT into PERMISSIONS(folder_id, user_id, owner_, read_, write_) values(:folder_id, :user_id, :owner_, :read_, :write_)");
+	$stmt->bindParam(':folder_id', $original_id, PDO::PARAM_INT);
 	$stmt->bindParam(':user_id', $user_id_share, PDO::PARAM_INT);
 	$stmt->bindParam(':owner_', $owner, PDO::PARAM_INT);
 	$stmt->bindParam(':read_', $read, PDO::PARAM_INT);

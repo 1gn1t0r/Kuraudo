@@ -1,5 +1,5 @@
 <?php
-include("config.php");
+include("../config.php");
 /*** begin our session ***/
 session_start();
 
@@ -84,7 +84,7 @@ else
         /*** if all is done, say thanks ***/
         $message = 'New user added';
 		
-		header("Location: index.php");
+		header("Location: ../index.php");
 		die();
     }
     catch(Exception $e)

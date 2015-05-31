@@ -1,7 +1,7 @@
 
 <?php
 
-include("config.php");
+include("../config.php");
 
 session_start();
 
@@ -76,7 +76,7 @@ else
 				$stmt->bind_param('d', $user_id);
 				$stmt->execute();
 				
-				header("Location: browse.php");
+				header("Location: ../browse.php");
 				exit();
 				die();
         }

@@ -45,7 +45,7 @@ $_SESSION['form_token'] = $form_token;
 
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		<form role="form" action="add_user.php" method="post">
+		<form role="form" action="control/add_user.php" method="post">
 			<input type="hidden" name="form_token" value="<?php echo $form_token; ?>" />
 			<div class="panel panel-primary">
       <div class="panel-heading">

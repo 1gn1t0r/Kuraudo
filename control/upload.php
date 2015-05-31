@@ -1,6 +1,6 @@
 <?php
 
-include("config.php");
+include("../config.php");
 
 
 function save_data($userid, $uname, $filepath, $original_name, $home_dir, $file_size, $file_hash) {
@@ -139,7 +139,7 @@ for($i=0; $i < count($filenames); $i++){
 	
 	if ($did_exist == 0)
 	{
-		if(move_uploaded_file($images['tmp_name'][$i], $target)) 
+		if(move_uploaded_file($images['tmp_name'][$i], "../" . $target)) 
 		{
 			$success = true;
 			$paths[] = $target;

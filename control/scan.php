@@ -1,6 +1,6 @@
 <?php
 
-include("config.php");
+include("../config.php");
 
 
 //$test_dir = "/home/test2";
