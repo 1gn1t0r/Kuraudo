@@ -55,11 +55,28 @@ else
 			printf("Connect failed: %s\n", mysqli_connect_error());
 			exit();
 		}	
-        $stmt = $mysqli->prepare("INSERT INTO users (username, fname, lname, email, password ) VALUES (?, ?, ?, ?, ?)");
-		
+        $stmt = $mysqli->prepare("INSERT INTO users (username, fname, lname, email, password, user_plan ) VALUES (?, ?, ?, ?, ?, 2)");
 		$stmt->bind_param('sssss',$username, $fname, $lname, $email, $password_hash);
-
         $stmt->execute() or die(mysqli_error($db));
+		$user_id = $mysqli->insert_id;
+		
+		$stmt = NULL;
+		$stmt = $mysqli->prepare("INSERT INTO folders (user_id, folder_name, contained_in) VALUES (?, 'home', -1)");
+		$stmt->bind_param('d',$user_id);
+        $stmt->execute() or die(mysqli_error($db));
+		$folder_id = $mysqli->insert_id;
+		
+		$stmt = NULL;
+		$stmt = $mysqli->prepare("INSERT INTO PERMISSIONS (folder_id, user_id, owner_, read_, write_) VALUES (?, ?, 1, 1, 1)");
+		$stmt->bind_param('dd',$folder_id, $user_id);
+        $stmt->execute() or die(mysqli_error($db));
+		
+		$stmt = NULL;
+		$stmt = $mysqli->prepare("UPDATE users SET default_folder=? where user_id =?");
+		$stmt->bind_param('dd',$folder_id, $user_id);
+        $stmt->execute() or die(mysqli_error($db));		
+		
+		
 
         /*** unset the form token session variable ***/
         unset( $_SESSION['form_token'] );

@@ -1,14 +1,13 @@
 <?php
 
+include("config.php");
+
 
 function save_data($userid, $uname, $filepath, $original_name, $home_dir, $file_size, $file_hash) {
     $username = $_SESSION['username'];
 	$user_id = $_SESSION['user_id'];
 	
-	$mysql_hostname = 'localhost';
-    $mysql_username = 'root';
-    $mysql_password = '';
-    $mysql_dbname = 'kuraudo';
+	global $mysql_hostname, $mysql_username, $mysql_password, $mysql_dbname;
 	
 	$filename = basename($filepath);
 	$file_type = 0;//file
@@ -21,9 +20,9 @@ function save_data($userid, $uname, $filepath, $original_name, $home_dir, $file_
 
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	
-	$stmt = $dbh->prepare("SELECT file_id from logical_files WHERE file_hash = :file_hash AND original_file_name = :original_file_name");
+	$stmt = $dbh->prepare("SELECT file_id from logical_files WHERE file_hash = :file_hash AND file_size = :file_size");
 	$stmt->bindParam(':file_hash', $sha1file, PDO::PARAM_STR);
-	$stmt->bindParam(':original_file_name', $original_name, PDO::PARAM_STR);
+	$stmt->bindParam(':file_size', $file_size, PDO::PARAM_INT);
 	$stmt->execute();
 	$file_id = $stmt->fetchColumn();
 	if($file_id == false)
@@ -53,46 +52,38 @@ function save_data($userid, $uname, $filepath, $original_name, $home_dir, $file_
         $file_id = $stmt->fetchColumn();
 			
 		
-
-		$user_path = $home_dir . $original_name;
 		//Check if virtual file exists
-		$stmt = $dbh->prepare("SELECT vfile_id from virtual_files WHERE pfile_id = :pfile_id AND user_id = :user_id AND user_path = :user_path");
-		$stmt->bindParam(':pfile_id', $file_id, PDO::PARAM_STR);
-		$stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
-		$stmt->bindParam(':user_path', $user_path, PDO::PARAM_STR);
+		$stmt = $dbh->prepare("SELECT vfile_id from virtual_files WHERE pfile_id = :pfile_id AND folder_id = :home_dir");
+		$stmt->bindParam(':pfile_id', $file_id, PDO::PARAM_INT);
+		$stmt->bindParam(':home_dir', $home_dir, PDO::PARAM_STR);
 		$stmt->execute();
 		$vfile_id = $stmt->fetchColumn();
 		
 		if($vfile_id == false)
 		{
-			$stmt = $dbh->prepare("INSERT INTO virtual_files (pfile_id, user_id, user_path, file_type) VALUES (:pfile_id, :user_id, :user_path, :file_type )");
-			$stmt->bindParam(':pfile_id', $file_id, PDO::PARAM_STR);
-			$stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
-			$stmt->bindParam(':user_path', $user_path, PDO::PARAM_STR);
-			$stmt->bindParam(':file_type', $file_type, PDO::PARAM_STR);
-		
+			$stmt = $dbh->prepare("INSERT INTO virtual_files (pfile_id, folder_id, file_name) VALUES (:pfile_id, :folder_id, :file_name)");
+			$stmt->bindParam(':pfile_id', $file_id, PDO::PARAM_INT);
+			$stmt->bindParam(':folder_id', $home_dir, PDO::PARAM_INT);
+			$stmt->bindParam(':file_name', $original_name, PDO::PARAM_STR);
 			$stmt->execute();
 			
-			
-			$stmt = $dbh->prepare("SELECT vfile_id from virtual_files WHERE pfile_id = :pfile_id AND user_id = :user_id AND user_path = :user_path");
-			$stmt->bindParam(':pfile_id', $file_id, PDO::PARAM_STR);
-			$stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
-			$stmt->bindParam(':user_path', $user_path, PDO::PARAM_STR);
+			$id = $dbh->lastInsertId();
+			$stmt = $dbh->prepare("INSERT INTO file_uploads (vfile_id, user_id, date) VALUES (:vfile_id, :user_id, NOW())");
+			$stmt->bindParam(':vfile_id', $id, PDO::PARAM_INT);
+			$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 			$stmt->execute();
-			$vfile_id = $stmt->fetchColumn();
 			
-
-			$stmt = $dbh->prepare("INSERT INTO permissions (vfile_id, user_id, owner_, read_, write_) VALUES (:vfile_id, :user_id, 1, 1, 1)");
-			$stmt->bindParam(':vfile_id', $vfile_id, PDO::PARAM_STR);
-			$stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
-				
-			$stmt->execute();
-
 		}
 		else
 		{
 			$did_exist = 2;
 		}
+		
+			
+		
+
+
+	
 		
 		
 		return $did_exist;

@@ -4,6 +4,9 @@ $(function(){
 		breadcrumbs = $('.breadcrumb'),
 		fileList = filemanager.find('.data'),
 		breadcrumbsUrls = [];
+		
+		
+		
 
 		function generateBreadcrumbs(nextDir){
 			var path = nextDir.split('/').slice(0);
@@ -11,6 +14,8 @@ $(function(){
 				path[i] = path[i-1]+ '/' +path[i];
 			}
 			return path;
+			
+			
 		}
 		
 		function searchByPath(dir, response) {
@@ -112,7 +117,7 @@ $(function(){
 					}
 				
 		
-					var folder = $('<tr class="folders">' + '<td class="folders"><a class="name nounderline folders glyphicon glyphicon-folder-close" href="' + f.path + '">&emsp;' + name + '</a></td><td>Folder</td><td></td><td></td></tr>');
+					var folder = $('<tr class="folders">' + '<td class="folders"><a class="name nounderline folders glyphicon glyphicon-folder-close" containing-folder="' +f.folder_id + '" href="' + f.path + '">&emsp;' + name + '</a></td><td>Folder</td><td></td><td></td></tr>');
 					
 					folder.appendTo(fileList);
 					
@@ -139,7 +144,7 @@ $(function(){
 					is_image_lightbox = ""; //delete this line to enable lightbox
 					var download_path = "get.php?file=" + vfile_id;
 					
-					var file = $('<tr class="files">' + '<td class="files"><a data-attr="' + vfile_id + '" href="' + download_path + '"' + is_image_lightbox + ' class="files nounderline name glyphicon glyphicon-file jiffysquad">&emsp;' + name +  '</a></td><td>' + fileType + '</td><td>'+fileSize+'</td><td>' + last_modified + '</td></tr>');
+					var file = $('<tr class="files">' + '<td class="files"><a containing-folder="' +f.folder_id + '" data-attr="' + vfile_id + '" href="' + download_path + '"' + is_image_lightbox + ' class="files nounderline name glyphicon glyphicon-file jiffysquad">&emsp;' + name +  '</a></td><td>' + fileType + '</td><td>'+fileSize+'</td><td>' + last_modified + '</td></tr>');
 					
 					file.appendTo(fileList);
 				});
@@ -186,6 +191,7 @@ $(function(){
 		}
 
 		function navigate_dir(dir){
+
 			var unescaped = decodeURIComponent(dir.substring(1));
 			$('#loading-indicator').show();
 			//$('#dimmerModal').modal('show');
@@ -198,26 +204,53 @@ $(function(){
 
 			var folders = [],
 				files = [];			
+			
 	
 			goto(dir, response);
 			});
+			
+			$.post("get_full_dir.php", {
+			 dir_id: dir.substr(1)
+		 }
+		 , function( data ) {
+		  		
+			var url = '';
+			breadcrumbsUrls = generateBreadcrumbs(data);
+			breadcrumbsUrls.forEach(function (u, i) {
+		
+					var name = u.split('/');
+
+					if (i !== breadcrumbsUrls.length - 1) {
+						url += '<li><a href="'+u+'"><span class="folderName">' + name[name.length-1] + '</span></a></li> ';
+					}
+					else {
+						url += '<li class="folderName active">' + name[name.length-1] + '</li>';
+					}
+
+				});
+			breadcrumbs.text('').append(url);
+
+			});
 		}
+		
+		
+			
 		
 		fileList.on('click', 'td.folders', function(e){
 			e.preventDefault();
 
-			var nextDir = $(this).find('a.folders').attr('href');
+			var nextDir = $(this).find('a.folders').attr('containing-folder');
 			currentDir = nextDir;
 			//alert(currentDir);
-
-			breadcrumbsUrls.push(nextDir);
+			var dir_title = $(this).find('a.folders').attr('href');
+			breadcrumbsUrls.push(dir_title);
 
 			window.location.hash = encodeURIComponent(nextDir);
 			currentPath = nextDir;
 		});
 		
 		fileList.on('click', 'td.files', function(e){
-			alert("Herro");
+			//alert("Herro");
 		});
 		
 		breadcrumbs.on('click', 'a', function(e){

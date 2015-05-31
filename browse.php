@@ -10,7 +10,7 @@ else
 	header("Location: index.php");
 	die(); 
 }
-
+$cdir = $_SESSION['home_dir'];
 ?>
 <html>
  <head>
@@ -19,7 +19,7 @@ else
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script src="js/script.js"></script>
+	<script src="js/files_browser.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script type="text/javascript" src="js/fileinput.min.js"></script>
 	<script type="text/javascript" src="js/ekko-lightbox.js"></script>
@@ -307,6 +307,7 @@ else
 	 $("#newFolderBtn").prop("disabled",true);
 	 $.post( "new_folder.php", {foldername:folder_name, curdir:cdir}, function( data ) {
 	  $( ".result" ).html( data );
+	  $("#newFolderBtn").prop("disabled",false);
 		$("#newFolderName").val("");
 		$('#newFolderModal').modal('hide'); 
 		window.location.hash = cdir + folder_name;
@@ -365,6 +366,7 @@ else
 		 item_id : theClickedItemId
 	 }
 	 , function( data ) {
+	 $("#confirmDeleteBtn").prop("disabled",false);
 	  $( ".result" ).html( data );
 		$('#deleteModal').modal('hide'); 
 	 });
@@ -408,6 +410,7 @@ else
 	 }
 	 , function( data ) {
 	  $( ".result" ).html( data );
+	  $("#renameBtn").prop("disabled",false);
 		$("#newRenamedName").val("");
 		$('#renameModal').modal('hide'); 
 		window.location.hash = cdir;
@@ -443,7 +446,9 @@ else
 	 , function( data ) {
 	  $( ".result" ).html( data );
 		$("#shareWithEmail").val("");
-		$('#shareWithModal').modal('hide'); 
+		$('#shareWithModal').modal('hide');
+		$("#shareWithBtn").prop("disabled",false);
+		
 	 });
 }; 
  </script>
@@ -457,12 +462,13 @@ else
         uploadAsync: false,
         uploadUrl: "upload.php", // your upload server url
 		uploadExtraData:function(){
-		var cdir = "home";
+		var cdir = <?php echo $cdir;?>;
 		if (typeof currentDir !== 'undefined') 
 		{
 			cdir = currentDir;
 		}
-		cdir = cdir + "/";
+		cdir = cdir;
+		alert(cdir);
 		return {curdir: cdir}}
             
 

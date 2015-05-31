@@ -54,16 +54,25 @@ else
 		exit();
 	}	
 	
-
-
-    $stmt = $mysqli->prepare("SELECT public 
-					FROM public_files
+	$stmt = $mysqli->prepare("SELECT folder_id 
+					FROM virtual_files
 					WHERE vfile_id = ?");
 					
 	$stmt->bind_param('i', $vfile_id);
 	$stmt->execute();
+	$stmt->bind_result($folder_id);
+	$stmt->fetch();
+	
+	$stmt = NULL;
+    $stmt = $mysqli->prepare("SELECT public 
+					FROM public_folders
+					WHERE folder_id = ?");
+					
+	$stmt->bind_param('i', $folder_id);
+	$stmt->execute();
 	$stmt->bind_result($public_);
 	$stmt->fetch();
+	
     if($public_ != 1)
 	{
 		if(isset( $_SESSION['user_id'] ))
@@ -72,7 +81,7 @@ else
 		}
 		else
 		{
-			echo "Insufficient permissions<br>";
+			echo "Insufficient permissions1<br>";
 			return;
 		}
 		$username = $_SESSION['username'];
@@ -81,26 +90,26 @@ else
 		$stmt = $mysqli->prepare("SELECT owner_, read_, write_ 
 						FROM permissions
 						WHERE user_id = ?
-						AND vfile_id = ?");
+						AND folder_id = ?");
 						
-		$stmt->bind_param('ii', $user_id, $vfile_id);
+		$stmt->bind_param('ii', $user_id, $folder_id);
 		$stmt->execute();
 		$stmt->bind_result($owner_, $read_, $write_);
 		$stmt->fetch();
 		if($read_ != 1)
 		{
-			echo "Insufficient permissions<br>";
+			echo "Insufficient permissions2<br>";
 			return;
 		}
 	}	
 		
 	$stmt = NULL;
-	$stmt = $mysqli->prepare("SELECT pfile_id, file_type, user_path
+	$stmt = $mysqli->prepare("SELECT pfile_id, file_name
 					FROM virtual_files
 					WHERE vfile_id = ?");
 	$stmt->bind_param('i', $vfile_id);
 	$stmt->execute();
-	$stmt->bind_result($pfile_id, $file_type, $user_path);
+	$stmt->bind_result($pfile_id, $file_name);
 	$stmt->fetch();
 
 	$stmt = NULL;
@@ -112,14 +121,17 @@ else
 	$stmt->bind_result($original_file_name, $file_path);
 	$stmt->fetch();
 	
-	force_download($file_path, basename($user_path));
+	$user_id = empty($_SESSION['user_id']) ? '' : $_SESSION['user_id']; 
+	if ($public_ == 1 && $user_id == '')
+		$user_id = -1;
 	
+	$stmt = NULL;
+	$stmt = $mysqli->prepare("INSERT INTO file_downloads(vfile_id, user_id, date_) 
+	VALUES(?, ?, NOW())");
+	$stmt->bind_param('dd', $vfile_id, $user_id);
+	$stmt->execute();
+	$stmt->fetch();
 	
-	
-	
-	
-	
-	
-
+	force_download($file_path, $file_name);	
 
 ?>

@@ -48,14 +48,14 @@ else
 			exit();
 		}	
 
-        $stmt = $mysqli->prepare("SELECT user_id, username, password FROM users 
+        $stmt = $mysqli->prepare("SELECT user_id, username, password, default_folder FROM users 
                     WHERE username = ? AND password = ?");
 		
 		$stmt->bind_param('ss', $username, $password_hash);
 
         $stmt->execute();
 
-		$stmt->bind_result($user_id, $username2, $password);
+		$stmt->bind_result($user_id, $username2, $password, $default_folder);
 		$stmt->fetch();
         if($user_id == false)
         {
@@ -66,9 +66,15 @@ else
                 /*** set the session user_id variable ***/
                 $_SESSION['user_id'] = $user_id;
 				$_SESSION['username'] = $username;
+				$_SESSION['home_dir'] = $default_folder;
 
                 /*** tell the user we are logged in ***/
                 $message = 'You are now logged in';
+				
+				$stmt = NULL;
+				$stmt = $mysqli->prepare("INSERT INTO logins(user_id, date)	VALUES(?, NOW())");
+				$stmt->bind_param('d', $user_id);
+				$stmt->execute();
 				
 				header("Location: browse.php");
 				exit();
