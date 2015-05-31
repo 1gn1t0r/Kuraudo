@@ -82,7 +82,7 @@ else
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Profile</a></li>
+            <li><a href="profile.php">Profile</a></li>
             <li><a href="#">Settings</a></li>
             <li class="divider"></li>
             <li><a href="logout.php">Sign out</a></li>
@@ -143,7 +143,7 @@ else
         <a data-action="View" class="glyphicon glyphicon-download-alt">&emsp;Download</a>
       </li>
       <li class="context-menu__item">
-        <a data-action="View" class="glyphicon glyphicon-remove">&emsp;Delete</a>
+        <a data-action="View" onclick="setDeleteModaInfo();" data-toggle="modal" data-target="#deleteModal" class="glyphicon glyphicon-remove">&emsp;Delete</a>
       </li>
       <li class="context-menu__item">
         <a data-action="View" onclick="setRenamePlaceholder();" data-toggle="modal" data-target="#renameModal" class="glyphicon glyphicon-pencil">&emsp;Rename</a>
@@ -152,7 +152,7 @@ else
         <a data-action="View" class="glyphicon glyphicon-retweet">&emsp;Move</a>
       </li>
 	  <li class="context-menu__item">
-        <a data-action="View" class="glyphicon glyphicon-share">&emsp;Share</a>
+        <a data-action="View" data-toggle="modal" data-target="#shareWithModal" class="glyphicon glyphicon-share">&emsp;Share</a>
       </li>
     </ul>
   </nav>
@@ -202,6 +202,28 @@ else
 </div>
  <!-- New Folder Modal -->
  
+  <!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="deleteModalLabel">Confirm Deletion</h4>
+      </div>
+      <div class="modal-body">
+		<div class="form-group has-feedback">
+			<label class="control-label">Are you sure you want to delete </label>
+			<label data-attr="" id="deleteItemText">None</label><br>
+		</div>
+      </div>
+      <div class="modal-footer">
+		<button type="button" class="btn btn-success" onclick="deleteItem()" id="confirmDeleteBtn">Confirm</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+ <!-- Delete Modal -->
+ 
 <!-- Share With Modal -->
 <div class="modal fade" id="shareWithModal" tabindex="-1" role="dialog" aria-labelledby="shareWithModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -214,6 +236,8 @@ else
 			<label class="control-label">Enter the email of the person to share with:</label>
 			<input type="text" class="form-control" id="shareWithEmail" placeholder="james@live.com" />
 			<i class="glyphicon glyphicon-folder-open form-control-feedback"></i>
+			
+			<span>Write Access<input type="checkbox" class="form-control" id="shareWithWrite"/></span>	
 		</div>
       </div>
       <div class="modal-footer">
@@ -264,7 +288,7 @@ else
   </div>
 </div>
  <!-- Preview Modal -->
-
+<div class="result"></div>
 
  </body>
  
@@ -309,6 +333,45 @@ else
 }; 
  </script>
 <!-- Set rename placeholder text -->
+
+ <!-- Set delete modal info -->
+ <script>
+ function setDeleteModaInfo() 
+ {
+	if(!theClickedItemName)
+		return;
+	if(!theClickedItemId)
+		return;
+	if(theClickedItemName == '')
+		return;
+	var item_name = theClickedItemName;
+	$("#deleteItemText").attr('data-attr',theClickedItemId);
+	$("#deleteItemText").text(theClickedItemName);
+	
+	
+}; 
+ </script>
+<!-- Set delete modal info -->
+
+ <!-- Delete item -->
+ <script>
+ function deleteItem() 
+ {
+	if(!theClickedItemId)
+		return;
+				 
+	 $("#confirmDeleteBtn").prop("disabled",true);
+	 $.post("delete_item.php", {
+		 item_id : theClickedItemId
+	 }
+	 , function( data ) {
+	  $( ".result" ).html( data );
+		$('#deleteModal').modal('hide'); 
+	 });
+}; 
+ </script>
+<!-- End Delete item -->
+
 
  <!-- Show Rename Modal -->
  <script>
@@ -355,7 +418,7 @@ else
 
  <!-- Share With -->
  <script>
- function renameItem() 
+ function shareWith() 
  {
 	if(!theClickedItemName)
 		return;
@@ -365,6 +428,7 @@ else
 	if(theClickedItemName == '')
 		return;
 	var email_ = $("#shareWithEmail").val();
+	var write_ = $("#shareWithWrite").is(':checked');
 	if(!email_)
 		return;
 	if(email_ == '')
@@ -373,13 +437,13 @@ else
 	 $("#shareWithBtn").prop("disabled",true);
 	 $.post("share_with.php", {
 		 original_id: theClickedItemId,
-		 email : email_
+		 email : email_,
+		 write : write_
 	 }
 	 , function( data ) {
 	  $( ".result" ).html( data );
 		$("#shareWithEmail").val("");
 		$('#shareWithModal').modal('hide'); 
-		window.location.hash = cdir;
 	 });
 }; 
  </script>
