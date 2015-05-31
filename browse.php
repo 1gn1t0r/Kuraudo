@@ -65,11 +65,15 @@ $cdir = $_SESSION['home_dir'];
       </form>
       <ul class="nav navbar-nav navbar-right">
 
+	  
 		<li>
-          <a data-toggle="modal" onclick="setShareWithModalInfo();" data-target="#shareWithModal" data-jiggle="tooltip" data-placement="bottom" data-original-title="Share" class="glyphicon glyphicon glyphicon-share" aria-hidden="true"></a>
+          <a data-toggle="modal" onclick="setPublicModalInfo();" data-target="#publicFolderModal" data-jiggle="tooltip" data-placement="bottom" data-original-title="Public Folder" class="glyphicon glyphicon-cloud" aria-hidden="true"></a>
         </li>
 		<li>
-          <a href="#" data-toggle="modal" data-jiggle="tooltip" data-target="#uploadModal" data-placement="bottom" data-original-title="Upload" class="glyphicon glyphicon glyphicon-cloud-upload" aria-hidden="true"></a>
+          <a data-toggle="modal" onclick="setShareWithModalInfo();" data-target="#shareWithModal" data-jiggle="tooltip" data-placement="bottom" data-original-title="Share" class="glyphicon glyphicon-share" aria-hidden="true"></a>
+        </li>
+		<li>
+          <a href="#" data-toggle="modal" data-jiggle="tooltip" data-target="#uploadModal" data-placement="bottom" data-original-title="Upload" class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></a>
         </li>
 		<li>
           <a href="#" data-jiggle="tooltip" data-placement="bottom" data-toggle="modal" data-target="#newFolderModal" data-original-title="New folder" class="glyphicon glyphicon-folder-open" aria-hidden="true"></a>
@@ -269,7 +273,7 @@ $cdir = $_SESSION['home_dir'];
 </div>
  <!-- Rename Modal -->
  
-  <!-- Preview Modal -->
+<!-- Preview Modal -->
 <div class="modal fade" id="previewItemModal" tabindex="-1" role="dialog" aria-labelledby="previewItemModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -285,6 +289,32 @@ $cdir = $_SESSION['home_dir'];
   </div>
 </div>
  <!-- Preview Modal -->
+ 
+ 
+<!-- Public Folder Modal -->
+<div class="modal fade" id="publicFolderModal" tabindex="-1" role="dialog" aria-labelledby="publicFolderModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="publicFolderModalLabel">Public file folder sharing</h4>
+      </div>
+      <div class="modal-body">
+		<div class="form-group has-feedback">
+			<span><label class="control-label" id="public-description">Enable public sharing for this folder</label> <input type="checkbox" class="form-control" id="publicSharingCheckBox"/></span>
+		</div>
+      </div>
+      <div class="modal-footer">
+		<button type="button" class="btn btn-success" onclick="setPublicFolder()" id="publicSharingBtn">Confirm</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+ <!-- Public Folder Modal -->
+
+ 
+ 
+ 
 <div class="result"></div>
 
  </body>
@@ -299,7 +329,6 @@ $cdir = $_SESSION['home_dir'];
 	{
 		cdir = currentDir;
 	}
-	alert(cdir); 
 	 $("#newFolderBtn").prop("disabled",true);
 	 $.post( "control/new_folder.php", {foldername:folder_name, curdir:cdir}, function( data ) {
 	  $( ".result" ).html( data );
@@ -350,6 +379,40 @@ $cdir = $_SESSION['home_dir'];
  </script>
 <!-- Set delete modal info -->
 
+
+  <!-- Set public share modal info -->
+ <script>
+ function setPublicModalInfo() 
+ {
+	var cdir = <?php echo $cdir;?>;
+	if (typeof currentDir !== 'undefined') 
+	{
+		cdir = currentDir;
+	}
+	
+	
+	$.post("control/get_public_shared.php", {
+		 folder_id : cdir
+	 }
+	 , function( data ) {
+		if(data == 1)
+			$("#publicSharingCheckBox").prop('checked', true);
+		else
+			$("#publicSharingCheckBox").prop('checked', false);
+		
+	 });
+	 
+	 	$.post("control/get_dir_name.php", {
+		 dir_id : cdir
+	 }
+	 , function( data ) {
+		$("#public-description").text("Enable public sharing for " + data + " folder");
+	 });
+
+}; 
+ </script>
+<!-- End set public share modal info -->
+
  <!-- Set share with modal info -->
  <script>
  function setShareWithModalInfo() 
@@ -359,8 +422,6 @@ $cdir = $_SESSION['home_dir'];
 	{
 		cdir = currentDir;
 	}
-	
-	
 	
 	$.post("control/get_dir_name.php", {
 		 dir_id : cdir
@@ -372,7 +433,8 @@ $cdir = $_SESSION['home_dir'];
 	
 }; 
  </script>
-<!-- End set share with modal info -->
+ <!-- End set share with modal info -->
+
 
  <!-- Delete item -->
  <script>
@@ -470,6 +532,38 @@ $cdir = $_SESSION['home_dir'];
 }; 
  </script>
 <!-- Share With -->
+ 
+  <!-- Set Public Folder -->
+ <script>
+ function setPublicFolder() 
+ {
+	var is_public = $("#publicSharingCheckBox").is(':checked');
+	if(is_public)
+		is_public = 1;
+	else
+		is_public = 0;
+
+	var cdir = <?php echo $cdir;?>;
+	if (typeof currentDir !== 'undefined') 
+	{
+		cdir = currentDir;
+	}
+	 
+	 $("#publicSharingBtn").prop("disabled",true);
+	 $.post("control/set_public.php", {
+		 folder_id: cdir,
+		 publicc : is_public
+	 }
+	 , function( data ) {
+	  $( ".result" ).html( data );
+		$('#publicFolderModal').modal('hide');
+		$("#publicSharingBtn").prop("disabled",false);
+		
+	 });
+}; 
+ </script>
+<!-- Set Public Folder -->
+ 
  
   <!-- Upload Script -->
  <script>
