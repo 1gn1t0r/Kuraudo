@@ -1,0 +1,174 @@
+/* ------------------
+ styling for the tables 
+   ------------------   */
+
+
+
+/* ---------- LOGIN-FORM ---------- */
+#login-form {
+  width: 300px;
+   margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+#login-form h3 {
+  background-color: #282830;
+  border-radius: 5px 5px 0 0;
+  color: #fff;
+  font-size: 14px;
+  padding: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#login-form fieldset {
+  background: #fff;
+border-color: rgba(53,86,129, 0.8);
+      border-style: solid;
+    border-width: 5px;
+  padding: 20px;
+  position: relative;
+}
+
+#login-form fieldset:before {
+  background-color: #fff;
+  content: "";
+  height: 8px;
+  left: 50%;
+  margin: -4px 0 0 -4px;
+  position: absolute;
+  top: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  width: 8px;
+}
+
+#login-form input {
+  font-size: 14px;
+}
+
+#login-form input[type="email"],
+#login-form input[type="password"] {
+  border: 1px solid #dcdcdc;
+  padding: 12px 10px;
+  width: 100%;
+}
+
+#login-form input[type="email"] {
+  border-radius: 3px 3px 0 0;
+}
+
+#login-form input[type="password"] {
+  border-top: none;
+  border-radius: 0px 0px 3px 3px;
+}
+
+#login-form input[type="submit"] {
+  background: rgba(53,86,129, 0.8);
+  border-radius: 3px;
+  color: #fff;
+  float: right;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 12px 20px;
+}
+
+#login-form input[type="submit"]:hover {
+  background: #198d98;
+}
+
+#login-form footer {
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+#register-form {
+  width: 600px;
+}
+
+#register-form h3 {
+  background-color: #282830;
+  border-radius: 5px 5px 0 0;
+  color: #fff;
+  font-size: 14px;
+  padding: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#register-form fieldset {
+  background: #fff;
+border-color: rgba(53,86,129, 0.8);
+      border-style: solid;
+    border-width: 5px;
+  padding: 20px;
+  position: relative;
+}
+
+#register-form fieldset:before {
+  background-color: #fff;
+  content: "";
+  height: 8px;
+  left: 50%;
+  margin: -4px 0 0 -4px;
+  position: absolute;
+  top: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  width: 8px;
+}
+
+#register-form input {
+  font-size: 14px;
+}
+
+#register-form input[type="email"],
+#register-form input[type="username"],
+#register-form input[type="fname"],
+#register-form input[type="lname"],
+#register-form input[type="password2"],
+#register-form input[type="password"] {
+  border: 2px solid #dcdcdc;
+  
+	width: 80%;
+	position: absolute;
+    right: 0px;
+	margin-right: 5px;
+
+	padding: 12px 15px;
+}
+
+
+#register-form input[type="submit"] {
+  background: rgba(53,86,129, 0.8);
+  border-radius: 3px;
+  color: #fff;
+  float: right;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 12px 20px;
+}
+
+#register-form input[type="submit"]:hover {
+  background: #198d98;
+}
+
+#register-form footer {
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+
+.colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+}

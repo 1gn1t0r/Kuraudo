@@ -1,0 +1,95 @@
+@charset "utf-8";
+
+
+/*-------------------------
+	Content area
+-------------------------*/
+
+.filemanager .data.animated {
+	-webkit-animation: showSlowlyElement 500ms; /* Chrome, Safari, Opera */
+	animation: showSlowlyElement 500ms; /* Standard syntax */
+}
+
+
+.filemanager .data li:hover {
+	background-color: #7ca1d2;
+	
+}
+
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes showSlowlyElement {
+	100%   	{ transform: scale(1); opacity: 1; }
+	0% 		{ transform: scale(1.05); opacity: 0; }
+}
+
+/* Standard syntax */
+@keyframes showSlowlyElement {
+	100%   	{ transform: scale(1); opacity: 1; }
+	0% 		{ transform: scale(1.05); opacity: 0; }
+}
+
+
+/*-------------------------
+		Icons
+-------------------------*/
+
+/* context menu */
+
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  padding: 12px 0;
+  width: 200px;
+  background-color: #fff;
+  border: solid 1px #dfdfdf;
+  box-shadow: 1px 1px 2px #cfcfcf;
+}
+
+.context-menu--active {
+  display: block;
+}
+
+.context-menu__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.context-menu__item {
+  display: block;
+  margin-bottom: 4px;
+    display: block;
+  padding: 4px 12px;
+  color: #0066aa;
+  text-decoration: none;
+}
+
+.context-menu__link:hover {
+  color: #fff;
+  background-color: #0066aa;
+}
+
+.nounderline{
+
+text-decoration: none;
+}
+.nounderline:hover{
+
+text-decoration: none;
+}
+
+#loading-indicator {
+   display:block;
+    z-index:    1000;
+	top: 50%;
+	position:absolute;
+	left: 50%;
+    margin:auto;
+	transform: translate(-50%, -50%);
+	opacity: 0.8;
+	
+}
+
+
