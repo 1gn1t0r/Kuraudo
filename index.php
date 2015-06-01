@@ -40,8 +40,8 @@ include("config.php")
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-		<li><a href="about.php">About</a></li>  
-		<li><a href="about.php">TOS</a></li>  
+		<li><a href="privacypolicy.php">Privacy Policy</a></li>  
+		<li><a href="tos.php">TOS</a></li>  
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

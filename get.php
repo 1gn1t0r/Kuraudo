@@ -87,6 +87,7 @@ else
 		$username = $_SESSION['username'];
 		$user_id = $_SESSION['user_id'];
 
+		$stmt = NULL;
 		$stmt = $mysqli->prepare("SELECT owner_, read_, write_ 
 						FROM permissions
 						WHERE user_id = ?

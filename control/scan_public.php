@@ -20,15 +20,6 @@ include("../config.php");
 //return;
 
 session_start();
-if(isset( $_SESSION['user_id'] ))
-{
-    
-}
-else
-{
-	return;
-}
-
 
 if (isset( $_GET['directory']))
 {
@@ -67,7 +58,7 @@ function get_base_path($folder_id)
 	$contained_in = $folder_id;
 	global $base_folder_path;
 	$base_folder_path = "";
-		
+	
 	
 	while($contained_in != -1)
 	{		
@@ -94,8 +85,6 @@ function get_base_path($folder_id)
 function scan2($base_folder_id)
 {
 	global $mysql_hostname, $mysql_username, $mysql_password, $mysql_dbname;
-	$username = $_SESSION['username'];
-	$user_id = $_SESSION['user_id'];
 	
 	$mysqli = new mysqli($mysql_hostname, $mysql_username, $mysql_password, $mysql_dbname);
 
@@ -103,28 +92,28 @@ function scan2($base_folder_id)
 		printf("Connect failed: %s\n", mysqli_connect_error());
 		exit();
 	}
-	
-	$stmt = $mysqli->prepare("SELECT read_, owner_ from permissions
-		WHERE folder_id = ?");
+
+	$stmt = $mysqli->prepare("SELECT public from public_folders
+				WHERE folder_id = ?");
 	$stmt->bind_param('d', $base_folder_id);
 	$stmt->execute();
-	$stmt->bind_result($read_, $owner_);
+	$stmt->bind_result($public);
 	$stmt->fetch();
-	if(!$read_)
+	if(!$public)
 		return;
-	if($read_ == 0 && $owner_ == 0)
+	if($public == 0)
 		return;
 
 	$stmt = NULL;
     $stmt = $mysqli->prepare("SELECT folder_id, folder_name from folders
 					WHERE contained_in = ?
 					ORDER BY folder_name");
-
 	$stmt->bind_param('d', $base_folder_id);
-
-	$files = array();
 	$stmt->execute();
 	$stmt->bind_result($folder_id, $folder_name);
+	
+	
+	$files = array();
 			
     while ($stmt->fetch()) {
 

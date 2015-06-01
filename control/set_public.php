@@ -26,7 +26,6 @@ function set_public_folder($folder_id, $public) {
 		$stmt->execute();
 	}
 	
-	$stmt->execute();	
 }
 
 session_start();

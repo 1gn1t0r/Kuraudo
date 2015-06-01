@@ -103,13 +103,6 @@ $cdir = $_SESSION['home_dir'];
  
 <div class="row">
  <div class="col-xs-2">
-	<ul class="nav nav-pills" role="tablist">
-  <li role="presentation"><a href="#" class="jiffysquad watashi">Upload </a></li>
-  <li role="presentation"><a href="#" class="jiffysquad">New Folder</a></li>
-  <li role="presentation"><a href="#">Messages</a></li>
-  <li role="presentation"><a>Storage</a></li>
-</ul>
-
 </div>
 
  <div class="col-xs-10">
@@ -300,7 +293,8 @@ $cdir = $_SESSION['home_dir'];
       </div>
       <div class="modal-body">
 		<div class="form-group has-feedback">
-			<span><label class="control-label" id="public-description">Enable public sharing for this folder</label> <input type="checkbox" class="form-control" id="publicSharingCheckBox"/></span>
+			<span><label class="control-label" id="public-description">Enable public sharing for this folder</label> <input onChange="setPublicModalInfoonChecked();" type="checkbox" class="form-control" id="publicSharingCheckBox"/></span>
+			<input type="text" class="form-control" id="publicFolderUrl" placeholder=""> </input>
 		</div>
       </div>
       <div class="modal-footer">
@@ -396,9 +390,24 @@ $cdir = $_SESSION['home_dir'];
 	 }
 	 , function( data ) {
 		if(data == 1)
+		{
+			$("#publicFolderUrl").show();
+			var server_path = "<?php echo "http://" . $_SERVER['SERVER_NAME'];?>";
+			var cur_path = "<?php echo $_SERVER['REQUEST_URI']; ?>";
+			var pathArray = window.location.pathname.split( '/' );
+			var newPathname = "";
+			for (i = 0; i < pathArray.length-1; i++) {
+			  newPathname += pathArray[i];
+			  newPathname += "/";
+			}
+			$("#publicFolderUrl").val(server_path + newPathname + "public.php#"+cdir);
 			$("#publicSharingCheckBox").prop('checked', true);
+		}
 		else
+		{
+			$("#publicFolderUrl").hide();
 			$("#publicSharingCheckBox").prop('checked', false);
+		}
 		
 	 });
 	 
@@ -412,6 +421,39 @@ $cdir = $_SESSION['home_dir'];
 }; 
  </script>
 <!-- End set public share modal info -->
+
+  <!-- Set public share modal info onChecked -->
+ <script>
+ function setPublicModalInfoonChecked() 
+ {
+	var cdir = <?php echo $cdir;?>;
+	if (typeof currentDir !== 'undefined') 
+	{
+		cdir = currentDir;
+	}
+	
+		if($("#publicSharingCheckBox").prop('checked'))
+		{
+			$("#publicFolderUrl").show();
+			var server_path = "<?php echo "http://" . $_SERVER['SERVER_NAME'];?>";
+			var cur_path = "<?php echo $_SERVER['REQUEST_URI']; ?>";
+			var pathArray = window.location.pathname.split( '/' );
+			var newPathname = "";
+			for (i = 0; i < pathArray.length-1; i++) {
+			  newPathname += pathArray[i];
+			  newPathname += "/";
+			}
+			$("#publicFolderUrl").val(server_path + newPathname + "public.php#"+cdir);
+		}
+		else
+		{
+			$("#publicFolderUrl").hide();
+		}
+
+
+}; 
+ </script>
+<!-- End set public share modal info onChecked -->
 
  <!-- Set share with modal info -->
  <script>
