@@ -125,14 +125,6 @@ $cdir = $_SESSION['home_dir'];
 </div>
 </div>
 
-
-
-
-
-
-
-
-
      
 <nav id="context-menu" class="context-menu">
     <ul class="context-menu__items nav nav-stacked nav-pills">
@@ -153,7 +145,7 @@ $cdir = $_SESSION['home_dir'];
   
 
   <script src="js/contextmenu.js"></script>
-  <script>theClickedItemName = '';theClickedItemId='';</script>
+  <script>theClickedItemName = '';theClickedItemId=''; isClickedItemFolder=0;</script>
   
  
  <!-- Uploading Modal -->
@@ -366,9 +358,7 @@ $cdir = $_SESSION['home_dir'];
 		return;
 	var item_name = theClickedItemName;
 	$("#deleteItemText").attr('data-attr',theClickedItemId);
-	$("#deleteItemText").text(theClickedItemName);
-	
-	
+	$("#deleteItemText").text(theClickedItemName);	
 }; 
  </script>
 <!-- Set delete modal info -->
@@ -478,7 +468,7 @@ $cdir = $_SESSION['home_dir'];
  <!-- End set share with modal info -->
 
 
- <!-- Delete item -->
+<!-- Delete item -->
  <script>
  function deleteItem() 
  {
@@ -487,7 +477,8 @@ $cdir = $_SESSION['home_dir'];
 				 
 	 $("#confirmDeleteBtn").prop("disabled",true);
 	 $.post("control/delete_item.php", {
-		 item_id : theClickedItemId
+		 item_id : theClickedItemId,
+		 is_dir: isClickedItemFolder
 	 }
 	 , function( data ) {
 	 $("#confirmDeleteBtn").prop("disabled",false);
@@ -498,8 +489,7 @@ $cdir = $_SESSION['home_dir'];
  </script>
 <!-- End Delete item -->
 
-
- <!-- Show Rename Modal -->
+<!-- Show Rename Modal -->
  <script>
  function renameItem() 
  {
@@ -525,10 +515,9 @@ $cdir = $_SESSION['home_dir'];
 	 
 	 $("#renameBtn").prop("disabled",true);
 	 $.post("control/rename_item.php", {
-		 original_name:theClickedItemName,
 		 original_id:theClickedItemId,
 		 renamed_name: new_name,
-		 current_dir: cdir
+		 is_dir: isClickedItemFolder
 	 }
 	 , function( data ) {
 	  $( ".result" ).html( data );
@@ -536,6 +525,7 @@ $cdir = $_SESSION['home_dir'];
 		$("#newRenamedName").val("");
 		$('#renameModal').modal('hide'); 
 		window.location.hash = cdir;
+		location.reload();
 	 });
 }; 
  </script>
@@ -606,8 +596,7 @@ $cdir = $_SESSION['home_dir'];
  </script>
 <!-- Set Public Folder -->
  
- 
-  <!-- Upload Script -->
+ <!-- Upload Script -->
  <script>
  $(document).on("ready", function() {
 	 	 		
@@ -627,7 +616,26 @@ $cdir = $_SESSION['home_dir'];
     });
 });
  </script>
-  <!-- End Upload Script-->
+ <!-- End Upload Script-->
+ 
+<!-- Moving Script -->
+ <script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+</script>
+<!-- Moving Script -->
+
  
  <script>
  $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {

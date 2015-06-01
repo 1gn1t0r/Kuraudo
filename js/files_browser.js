@@ -35,7 +35,7 @@ $(function(){
 					//if (rendered.length) {
 
 						currentPath = hash[0];
-						breadcrumbsUrls = generateBreadcrumbs(hash[0]);
+						//breadcrumbsUrls = generateBreadcrumbs(hash[0]);
 						render(rendered);
 
 					//}	
@@ -117,7 +117,7 @@ $(function(){
 					}
 				
 		
-					var folder = $('<tr class="folders">' + '<td class="folders"><a class="name nounderline folders glyphicon glyphicon-folder-close" containing-folder="' +f.folder_id + '" href="' + f.path + '">&emsp;' + name + '</a></td><td>Folder</td><td></td><td></td></tr>');
+					var folder = $('<tr class="folders">' + '<td class="folders"><a  class="name nounderline folders glyphicon glyphicon-folder-close" containing-folder="' +f.folder_id + '" href="' + f.path + '">&emsp;' + name + '</a></td><td>Folder</td><td></td><td></td></tr>');
 					
 					folder.appendTo(fileList);
 					
@@ -220,9 +220,6 @@ $(function(){
 			});
 		}
 		
-		
-			
-		
 		fileList.on('click', 'td.folders', function(e){
 			e.preventDefault();
 
@@ -230,7 +227,7 @@ $(function(){
 			currentDir = nextDir;
 			//alert(currentDir);
 			var dir_title = $(this).find('a.folders').attr('href');
-			breadcrumbsUrls.push(dir_title);
+			//breadcrumbsUrls.push(dir_title);
 
 			window.location.hash = encodeURIComponent(nextDir);
 			currentPath = nextDir;

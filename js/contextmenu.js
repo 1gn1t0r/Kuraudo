@@ -2,13 +2,6 @@
   
   "use strict";
 
-  //////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // H E L P E R    F U N C T I O N S
-  //
-  //////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////
 
   /**
    * Function to check if we clicked inside an element with a particular class
@@ -19,13 +12,20 @@
    * @return {Boolean}
    */
   function clickInsideElement( e, className ) {
-    if(e.target.text && $(e.target).attr('data-attr'))
+    if(e.target.text && $(e.target).hasClass('files'))
 	{	
 		if(e.target.text != '' && e.target.text != undefined)
 		{
 			theClickedItemName = e.target.text;
 			theClickedItemId = $(e.target).attr('data-attr');
+			isClickedItemFolder = 0;
 		}
+	}
+	else if (e.target.text && $(e.target).hasClass('folders'))
+	{
+		theClickedItemName = e.target.text;
+		theClickedItemId = $(e.target).attr('containing-folder');
+		isClickedItemFolder = 1;
 	}
 	var el = e.target;
     
