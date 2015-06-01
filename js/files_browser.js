@@ -117,7 +117,7 @@ $(function(){
 					}
 				
 		
-					var folder = $('<tr class="folders">' + '<td class="folders"><a  class="name nounderline folders glyphicon glyphicon-folder-close" containing-folder="' +f.folder_id + '" href="' + f.path + '">&emsp;' + name + '</a></td><td>Folder</td><td></td><td></td></tr>');
+					var folder = $('<tr class="folders" >' + '<td containing-folder="' + f.folder_id + '" class="folders" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"><a class="name nounderline folders glyphicon glyphicon-folder-close" containing-folder="' +f.folder_id + '" href="' + f.path + '">&emsp;' + name + '</a></td><td>Folder</td><td></td><td></td></tr>');
 					
 					folder.appendTo(fileList);
 					

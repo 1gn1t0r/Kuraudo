@@ -625,13 +625,33 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData("src-id", $(ev.target).attr('containing-folder'));
 }
 
 function drop(ev) {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
+    var src_folder_ = ev.dataTransfer.getData("src-id");
+	
+	var target_folder_ = $(ev.target).attr('containing-folder');
+	
+	if(!target_folder_)
+		return;
+	if(!src_folder_)
+		return;
+	if(target_folder_ == src_folder_)
+		return;
+	
+	
+	 $.post("control/move_item.php", {
+		 src_folder: src_folder_,
+		 target_folder : target_folder_
+	 }
+	 , function( data ) {
+	  $( ".result" ).html( data );
+		location.reload();
+	 });
+	
+    //ev.target.appendChild(document.getElementById(data));
 }
 </script>
 <!-- Moving Script -->
