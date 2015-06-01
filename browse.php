@@ -21,17 +21,13 @@ $cdir = $_SESSION['home_dir'];
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="js/files_browser.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
-	<script type="text/javascript" src="js/fileinput.min.js"></script>
-	<script type="text/javascript" src="js/ekko-lightbox.js"></script>
-		
+	<script type="text/javascript" src="js/fileinput.min.js"></script>	
 	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/bootstrap-theme.css">
-	<link rel="stylesheet" href="css/ekko-lightbox.css">
-	
+	<link rel="stylesheet" href="css/bootstrap-theme.css">	
 	<link href="css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="css/styles.css" />
 
-  
+ 
  </head>
 
 <body>
@@ -57,13 +53,6 @@ $cdir = $_SESSION['home_dir'];
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Files <span class="sr-only">(current)</span></a></li>        
       </ul>
-      <form class="navbar-form navbar-left" role="search">
-		<div class="form-group has-feedback">
-			<input type="text" class="form-control" placeholder="Search" />
-			<i class="glyphicon glyphicon-search form-control-feedback"></i>
-		</div>		
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
       <ul class="nav navbar-nav navbar-right">
 
 	  
@@ -102,7 +91,7 @@ $cdir = $_SESSION['home_dir'];
  
  <!-- Container Menu -->
 <div class="container">
-<input type="hidden" id="default-dir" data-attr="<?php echo $cdir; ?>">
+<input type="hidden" id="default-dir" data-attr="<?php echo $cdir; ?>"></input>
 	<div class="row">
 		<div class="col-xs-2">
 		</div>
@@ -262,16 +251,21 @@ $cdir = $_SESSION['home_dir'];
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="previewItemModalLabel">Create new folder</h4>
+        <h4 class="modal-title" id="previewItemModalLabel">Preview</h4>
       </div>
       <div class="modal-body">
+		<center>
 		<img id="previewImg" src="" alt=""/>
+		</center>
       </div>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+	  <div class="modal-footer">
+		<a role="button" class="btn btn-primary" href="google.com" id="btnDownloadPreview">Download</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+
 <!-- Preview Modal -->
   
 <!-- Public Folder Modal -->
@@ -605,12 +599,12 @@ $cdir = $_SESSION['home_dir'];
 		{
 			cdir = currentDir;
 		}
-
 		return {curdir: cdir}}
-            
-
     });
 });
+	$('#uploadModal').on('hidden.bs.modal', function () {
+				$(window).trigger("hashchange");
+		});
  </script>
 <!-- Upload Script-->
  
@@ -671,7 +665,11 @@ function drop(ev) {
  <script>
  $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
     event.preventDefault();
-    $(this).ekkoLightbox();
+	$("#previewImg").attr("src", $(event.target).attr("href"));
+	$("#btnDownloadPreview").attr("href", $(event.target).attr("href"));	
+	$("#previewItemModalLabel").text("Preview" + $(event.target).text());
+	
+	$('#previewItemModal').modal('show'); 
 }); 
  </script>
  

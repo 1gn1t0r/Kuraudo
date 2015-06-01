@@ -141,7 +141,7 @@ $(function(){
 					{
 						is_image_lightbox = 'data-toggle="lightbox"';
 					}
-					is_image_lightbox = ""; //delete this line to enable lightbox
+					//is_image_lightbox = ""; //delete this line to enable lightbox
 					var download_path = "get.php?file=" + vfile_id;
 					
 					var file = $('<tr class="files">' + '<td draggable="true" ondragstart="drag(event)" data-attr="' + vfile_id + '" class="files"><a containing-folder="' +f.folder_id + '" data-attr="' + vfile_id + '" href="' + download_path + '"' + is_image_lightbox + ' class="files nounderline name glyphicon glyphicon-file jiffysquad">&emsp;' + name +  '</a></td><td>' + fileType + '</td><td>'+fileSize+'</td><td>' + last_modified + '</td></tr>');
@@ -236,35 +236,6 @@ $(function(){
 		fileList.on('click', 'td.files', function(e){
 			//alert("Herro");
 		});
-		
-		/*breadcrumbs.on('click', 'a', function(e){
-			e.preventDefault();
-			var index = breadcrumbs.find('a').index($(this)),
-				nextDir = breadcrumbsUrls[index];
-			breadcrumbsUrls.length = Number(index);
-			window.location.hash = encodeURIComponent(nextDir);
-		});*/
-		
-		/*$('#newFolderModal').on('hidden.bs.modal', function () {
-			if(window.location.hash == '')
-			{
-				window.location.hash = 'home';
-			}
-			new_dir = window.location.hash;
-	
-			navigate_dir(new_dir);
-		})
-		
-		$('#uploadModal').on('hidden.bs.modal', function () {
-			if(window.location.hash == '')
-			{
-				window.location.hash = 'home';
-			}
-			new_dir = window.location.hash;
-	
-			navigate_dir(new_dir);
-		});*/
-		
 		
 		
 		$(window).on('hashchange', function(){
