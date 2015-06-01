@@ -36,6 +36,7 @@ $cdir = $_SESSION['home_dir'];
 
 <body>
 
+<!-- Navigation Bar-->
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -93,39 +94,38 @@ $cdir = $_SESSION['home_dir'];
           </ul>
         </li>
       </ul>
+	  </div>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+<!-- Navigation Bar -->
  
+ <!-- Container Menu -->
 <div class="container">
 <input type="hidden" id="default-dir" data-attr="<?php echo $cdir; ?>">
-
- 
-<div class="row">
- <div class="col-xs-2">
-</div>
-
- <div class="col-xs-10">
-
-	<div class="filemanager">
-	 <div class = "well">
-		<ol class="breadcrumb "></ol>
-	
-		<table class="table data table-striped">
-		</table>
-					
-	<div>
-	<img src="images/482.gif" id="loading-indicator" style="display:none" />
+	<div class="row">
+		<div class="col-xs-2">
+		</div>
+		 <div class="col-xs-10">
+			<!-- Filemanager -->
+			<div class="filemanager">
+				<div class = "well">
+					<ol class="breadcrumb "></ol>
+					<table class="table data table-striped">
+					</table>
+								
+				<div>
+				<img src="images/482.gif" id="loading-indicator" style="display:none" />
+				</div>
+				</div>
+			</div>
+			<!-- Filemanager -->
+		</div>
 	</div>
-	</div>
-	
 </div>
-</div>
-	
-</div>
-</div>
+<!-- Container Menu -->
 
-     
+<!-- Context Menu -->     
 <nav id="context-menu" class="context-menu">
     <ul class="context-menu__items nav nav-stacked nav-pills">
       <li class="context-menu__item">
@@ -137,18 +137,16 @@ $cdir = $_SESSION['home_dir'];
       <li class="context-menu__item">
         <a data-action="View" onclick="setRenamePlaceholder();" data-toggle="modal" data-target="#renameModal" class="glyphicon glyphicon-pencil">&emsp;Rename</a>
       </li>
-		<li class="context-menu__item">
-        <a data-action="View" class="glyphicon glyphicon-retweet">&emsp;Move</a>
-      </li>
     </ul>
-  </nav>
-  
+</nav>
+<!-- Context Menu -->  
 
-  <script src="js/contextmenu.js"></script>
-  <script>theClickedItemName = '';theClickedItemId=''; isClickedItemFolder=0;</script>
-  
+<!-- Context Menu Javascript-->
+<script src="js/contextmenu.js"></script>
+<script>theClickedItemName = '';theClickedItemId=''; isClickedItemFolder=0;</script>
+<!-- Context Menu Javascript -->  
  
- <!-- Uploading Modal -->
+<!-- Uploading Modal -->
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModelLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -164,8 +162,9 @@ $cdir = $_SESSION['home_dir'];
     </div>
   </div>
 </div>
+<!-- Uploading Modal -->
 
- <!-- New Folder Modal -->
+<!-- New Folder Modal -->
 <div class="modal fade" id="newFolderModal" tabindex="-1" role="dialog" aria-labelledby="newFolderModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -186,9 +185,9 @@ $cdir = $_SESSION['home_dir'];
     </div>
   </div>
 </div>
- <!-- New Folder Modal -->
+<!-- New Folder Modal -->
  
-  <!-- Delete Modal -->
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -208,7 +207,7 @@ $cdir = $_SESSION['home_dir'];
     </div>
   </div>
 </div>
- <!-- Delete Modal -->
+<!-- Delete Modal -->
  
 <!-- Share With Modal -->
 <div class="modal fade" id="shareWithModal" tabindex="-1" role="dialog" aria-labelledby="shareWithModalLabel" aria-hidden="true">
@@ -235,7 +234,7 @@ $cdir = $_SESSION['home_dir'];
 </div>
 <!-- Share With Modal -->
  
-  <!-- Rename Modal -->
+<!-- Rename Modal -->
 <div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -256,7 +255,7 @@ $cdir = $_SESSION['home_dir'];
     </div>
   </div>
 </div>
- <!-- Rename Modal -->
+<!-- Rename Modal -->
  
 <!-- Preview Modal -->
 <div class="modal fade" id="previewItemModal" tabindex="-1" role="dialog" aria-labelledby="previewItemModalLabel" aria-hidden="true">
@@ -273,9 +272,8 @@ $cdir = $_SESSION['home_dir'];
     </div>
   </div>
 </div>
- <!-- Preview Modal -->
- 
- 
+<!-- Preview Modal -->
+  
 <!-- Public Folder Modal -->
 <div class="modal fade" id="publicFolderModal" tabindex="-1" role="dialog" aria-labelledby="publicFolderModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -296,16 +294,13 @@ $cdir = $_SESSION['home_dir'];
     </div>
   </div>
 </div>
- <!-- Public Folder Modal -->
+<!-- Public Folder Modal -->
 
- 
- 
- 
 <div class="result"></div>
 
- </body>
+</body>
  
- <!-- Show New Folder Modal -->
+<!-- Show New Folder Modal -->
  <script>
  function createNewFolder() 
  {
@@ -321,15 +316,17 @@ $cdir = $_SESSION['home_dir'];
 	  $("#newFolderBtn").prop("disabled",false);
 		$("#newFolderName").val("");
 		$('#newFolderModal').modal('hide'); 
-		window.location.hash = cdir + folder_name;
+		//location.reload();
+		//navigate_dir(5);
+	
+		 $(window).trigger("hashchange");
 	 });
 
 }; 
  </script>
-<!-- End Show New Folder Modal -->
+<!-- Show New Folder Modal -->
 
-
- <!-- Set rename placeholder text -->
+<!-- Set rename placeholder text -->
  <script>
  function setRenamePlaceholder() 
  {
@@ -346,7 +343,7 @@ $cdir = $_SESSION['home_dir'];
  </script>
 <!-- Set rename placeholder text -->
 
- <!-- Set delete modal info -->
+<!-- Set delete modal info -->
  <script>
  function setDeleteModaInfo() 
  {
@@ -363,8 +360,7 @@ $cdir = $_SESSION['home_dir'];
  </script>
 <!-- Set delete modal info -->
 
-
-  <!-- Set public share modal info -->
+<!-- Set public share modal info -->
  <script>
  function setPublicModalInfo() 
  {
@@ -410,9 +406,9 @@ $cdir = $_SESSION['home_dir'];
 
 }; 
  </script>
-<!-- End set public share modal info -->
+<!-- Set public share modal info -->
 
-  <!-- Set public share modal info onChecked -->
+<!-- Set public share modal info onChecked -->
  <script>
  function setPublicModalInfoonChecked() 
  {
@@ -443,9 +439,9 @@ $cdir = $_SESSION['home_dir'];
 
 }; 
  </script>
-<!-- End set public share modal info onChecked -->
+<!-- Set public share modal info onChecked -->
 
- <!-- Set share with modal info -->
+<!-- Set share with modal info -->
  <script>
  function setShareWithModalInfo() 
  {
@@ -465,11 +461,10 @@ $cdir = $_SESSION['home_dir'];
 	
 }; 
  </script>
- <!-- End set share with modal info -->
-
+<!-- Set share with modal info -->
 
 <!-- Delete item -->
- <script>
+<script>
  function deleteItem() 
  {
 	if(!theClickedItemId)
@@ -484,13 +479,14 @@ $cdir = $_SESSION['home_dir'];
 	 $("#confirmDeleteBtn").prop("disabled",false);
 	  $( ".result" ).html( data );
 		$('#deleteModal').modal('hide'); 
+		 $(window).trigger("hashchange");
 	 });
 }; 
  </script>
-<!-- End Delete item -->
+<!-- Delete item -->
 
 <!-- Show Rename Modal -->
- <script>
+<script>
  function renameItem() 
  {
 
@@ -525,14 +521,14 @@ $cdir = $_SESSION['home_dir'];
 		$("#newRenamedName").val("");
 		$('#renameModal').modal('hide'); 
 		window.location.hash = cdir;
-		location.reload();
+		 $(window).trigger("hashchange");
 	 });
 }; 
  </script>
-<!-- End Show Rename Modal -->
+<!-- Show Rename Modal -->
 
- <!-- Share With -->
- <script>
+<!-- Share With -->
+<script>
  function shareWith() 
  {
 	var email_ = $("#shareWithEmail").val();
@@ -564,9 +560,9 @@ $cdir = $_SESSION['home_dir'];
 }; 
  </script>
 <!-- Share With -->
- 
-  <!-- Set Public Folder -->
- <script>
+
+<!-- Set Public Folder -->
+<script>
  function setPublicFolder() 
  {
 	var is_public = $("#publicSharingCheckBox").is(':checked');
@@ -596,8 +592,8 @@ $cdir = $_SESSION['home_dir'];
  </script>
 <!-- Set Public Folder -->
  
- <!-- Upload Script -->
- <script>
+<!-- Upload Script -->
+<script>
  $(document).on("ready", function() {
 	 	 		
     $("#images").fileinput({
@@ -616,39 +612,54 @@ $cdir = $_SESSION['home_dir'];
     });
 });
  </script>
- <!-- End Upload Script-->
+<!-- Upload Script-->
  
 <!-- Moving Script -->
- <script>
+<script>
 function allowDrop(ev) {
     ev.preventDefault();
 }
 
 function drag(ev) {
-    ev.dataTransfer.setData("src-id", $(ev.target).attr('containing-folder'));
+	var isFolder = 1;
+	if($(ev.target).hasClass("files"))
+	{
+		ev.dataTransfer.setData("src-id", $(ev.target).attr('data-attr'));
+		ev.dataTransfer.setData("is-dir", 0);
+	}
+	else
+	{
+		ev.dataTransfer.setData("src-id", $(ev.target).attr('containing-folder'));
+		ev.dataTransfer.setData("is-dir", 1);
+	}
+	
+    
 }
 
 function drop(ev) {
     ev.preventDefault();
-    var src_folder_ = ev.dataTransfer.getData("src-id");
+    var src_id = ev.dataTransfer.getData("src-id");
+	var is_folder = ev.dataTransfer.getData("is-dir");
 	
 	var target_folder_ = $(ev.target).attr('containing-folder');
 	
+	
 	if(!target_folder_)
 		return;
-	if(!src_folder_)
+	if(!src_id)
 		return;
-	if(target_folder_ == src_folder_)
+	if(target_folder_ == src_id && is_folder == 1)
 		return;
 	
 	
 	 $.post("control/move_item.php", {
-		 src_folder: src_folder_,
-		 target_folder : target_folder_
+		 src_folder: src_id,
+		 target_folder : target_folder_,
+		 is_dir: is_folder
 	 }
 	 , function( data ) {
 	  $( ".result" ).html( data );
-		location.reload();
+		 $(window).trigger("hashchange");
 	 });
 	
     //ev.target.appendChild(document.getElementById(data));
@@ -664,16 +675,6 @@ function drop(ev) {
 }); 
  </script>
  
- <script>
- //This is not working. The event handler is lost when the table is generated
-$(document).ready(function(){
-  $('.jiffysquad').click(function(){
-    alert($(this).attr('href'));
-    // or alert($(this).hash();
-  });
-});
- </script>
-
  <script type="text/javascript">
 $(document).ready(function(){
     $('[data-jiggle="tooltip"]').tooltip();   

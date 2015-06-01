@@ -1,46 +1,15 @@
-Login without a valid account results in blank screen
-Ensure there are no duplicate files by checking for existing hashes and files with same size. ignore filenmae.
-New folder
-Non image uploading
-Sharing
-Context Menu
-Lightbox preview
-Downloading
-
-
-
-
-
-
-
-
-REII413 2015 PRAK SPESIFIKASIE
+TO DO
 ------------------------------
+Move files to folders
 
+Complete sharing
 
-Bou 'n webgebaseerde stelsel met PHP en MySQL (MariaDB) waarmee gebruikers aanlyn lêers kan stoor en deel met mekaar. 
-Die volgende is belangrik:
+Login without a valid account results in blank screen
 
+Usage quotas
 
-Gebruikers moet kan:
+Lightbox preview
 
-
-* Lêers oplaai na die stelsel toe, verkieslik met AJAX (XMLHttpRequest).
-
-* Lêers wat opgelaai is kan skuif en uitvee.
-
-* Gebruikersgroepe skep en administreer.
-
-* Toegangsparameters van lêergidse op hoofgidsvlak (first level directory) stel na privaat, spesifieke groepe of publiek.
-
-
-
-Laat die stelsel afgerond en professioneel lyk deur CSS-gebaseerde stylblaaie te gebruik.
-
-
-
-Bonuspunte vir:
-
-* Gebruikskwotas (limiete op die hoeveelheid data wat gebruikers kan stoor).
-
-* Mooi grafieke wat die gebruik van die stelsel en die allokasie van data kan visualiseer.
+Uploading permissions
+Deletion permissions
+Renamepermissions

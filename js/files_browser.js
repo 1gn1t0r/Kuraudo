@@ -144,7 +144,7 @@ $(function(){
 					is_image_lightbox = ""; //delete this line to enable lightbox
 					var download_path = "get.php?file=" + vfile_id;
 					
-					var file = $('<tr class="files">' + '<td class="files"><a containing-folder="' +f.folder_id + '" data-attr="' + vfile_id + '" href="' + download_path + '"' + is_image_lightbox + ' class="files nounderline name glyphicon glyphicon-file jiffysquad">&emsp;' + name +  '</a></td><td>' + fileType + '</td><td>'+fileSize+'</td><td>' + last_modified + '</td></tr>');
+					var file = $('<tr class="files">' + '<td draggable="true" ondragstart="drag(event)" data-attr="' + vfile_id + '" class="files"><a containing-folder="' +f.folder_id + '" data-attr="' + vfile_id + '" href="' + download_path + '"' + is_image_lightbox + ' class="files nounderline name glyphicon glyphicon-file jiffysquad">&emsp;' + name +  '</a></td><td>' + fileType + '</td><td>'+fileSize+'</td><td>' + last_modified + '</td></tr>');
 					
 					file.appendTo(fileList);
 				});

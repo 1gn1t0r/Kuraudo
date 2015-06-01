@@ -60,6 +60,9 @@ else
         if($user_id == false)
         {
             $message = 'Login Failed';
+			//header("Location: ../index.php");
+			//exit();
+			//die();
         }        
         else
         {
@@ -81,4 +84,5 @@ else
 				die();
         }
 }
+echo $message;
 ?>
