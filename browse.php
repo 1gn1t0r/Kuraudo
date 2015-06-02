@@ -118,9 +118,6 @@ $cdir = $_SESSION['home_dir'];
 <nav id="context-menu" class="context-menu">
     <ul class="context-menu__items nav nav-stacked nav-pills">
       <li class="context-menu__item">
-        <a data-action="View" class="glyphicon glyphicon-download-alt">&emsp;Download</a>
-      </li>
-      <li class="context-menu__item">
         <a data-action="View" onclick="setDeleteModaInfo();" data-toggle="modal" data-target="#deleteModal" class="glyphicon glyphicon-remove">&emsp;Delete</a>
       </li>
       <li class="context-menu__item">
